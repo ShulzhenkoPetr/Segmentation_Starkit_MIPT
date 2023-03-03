@@ -1,0 +1,3 @@
+[submodule "models/yoeo"]
+	path = models/yoeo
+	url = https://github.com/bit-bots/YOEO.git
