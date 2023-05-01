@@ -1,0 +1,3 @@
+train=../../data/torso_reality/train/train.txt
+valid=../../data/torso_reality/test/test.txt
+names=../../data/torso_reality/yoeo.names.yaml
