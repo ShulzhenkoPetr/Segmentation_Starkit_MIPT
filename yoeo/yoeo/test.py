@@ -165,10 +165,6 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
 
         imgs = Variable(imgs.type(Tensor), requires_grad=False)
 
-        print("MASK TARGETS SHAPE: ")
-        print(mask_targets.shape)
-
-
         with torch.no_grad():
             t1 = time.time()
             yolo_outputs, segmentation_outputs = model(imgs)
@@ -242,7 +238,7 @@ def run():
     print_environment_info()
     parser = argparse.ArgumentParser(description="Evaluate validation data.")
     parser.add_argument("-m", "--model", type=str, default="config/yoeo_lines.cfg", help="Path to model definition file (.cfg)")
-    parser.add_argument("-w", "--weights", type=str, default="weights/yoeo_lines.pth", help="Path to weights or checkpoint file (.weights or .pth)")
+    parser.add_argument("-w", "--weights", type=str, default="weights/yoeo2.pth", help="Path to weights or checkpoint file (.weights or .pth)")
     parser.add_argument("-d", "--data", type=str, default="config/yoeo.data", help="Path to data config file (.data)")
     parser.add_argument("-b", "--batch_size", type=int, default=8, help="Size of each image batch")
     parser.add_argument("-v", "--verbose", action='store_true', help="Makes the validation more verbose")
@@ -261,9 +257,23 @@ def run():
     #print(os.getcwd())
     class_names = load_classes(data_config["names"])  # Detection and segmentation class names
 
-    #print(class_names)
+    print(class_names)
+    # state_dict = torch.load(args.weights, map_location=torch.device('cpu'))
+    # print(state_dict.keys())
+    # state_dict['module_list.50.conv_50.weight'] = state_dict['module_list.50.conv_50.weight'][:2, :, :, :]
+    # state_dict['module_list.50.batch_norm_50.bias'] = state_dict['module_list.50.batch_norm_50.bias'][:2]
+    # state_dict['module_list.50.batch_norm_50.running_mean'] = state_dict['module_list.50.batch_norm_50.running_mean'][:2]
+    # state_dict['module_list.50.batch_norm_50.running_var'] = state_dict['module_list.50.batch_norm_50.running_var'][:2]
+    # module_list.50.batch_norm_50.weight
+    # module_list.50.batch_norm_50.bias
+    # module_list.50.batch_norm_50.running_mean
+    # module_list.50.batch_norm_50.running_var
 
     model = load_model(args.model, args.weights)
+
+    #print(model.state_dict()['module_list.50.batch_norm_50.running_mean'].shape)
+
+    # torch.save(model.state_dict(), 'weights/yoeo2.pth')
 
     evaluate_model_file(
         args.model,

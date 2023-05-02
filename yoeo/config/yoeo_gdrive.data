@@ -1,0 +1,3 @@
+train=../../gdrive/MyDrive/torso_reality/train/train.txt
+valid=../../gdrive/MyDrive/torso_reality/test/test.txt
+names=../../gdrive/MyDrive/torso_reality/yoeo.names.yaml

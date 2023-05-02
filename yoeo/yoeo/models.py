@@ -179,12 +179,6 @@ class SegLayer(nn.Module):
         if self.training:
             return x
         else:
-            print(x.shape)
-            print("Just X: ")
-            print(x)
-            print("X after argmax: ")
-            print(torch.argmax(x, dim=1).to(torch.uint8).shape)
-            print(torch.argmax(x, dim=1).to(torch.uint8))
             return torch.argmax(x, dim=1).to(torch.uint8)
 
 
@@ -341,6 +335,13 @@ def load_model(model_path, weights_path=None):
     if weights_path:
         if weights_path.endswith(".pth"):
             # Load checkpoint weights
+            # state_dict = torch.load(weights_path, map_location=torch.device('cpu'))
+            # state_dict['module_list.50.conv_50.weight'] = state_dict['module_list.50.conv_50.weight'][:2, :, :, :]
+            # state_dict['module_list.50.batch_norm_50.weight'] = state_dict['module_list.50.batch_norm_50.weight'][:2]
+            # state_dict['module_list.50.batch_norm_50.bias'] = state_dict['module_list.50.batch_norm_50.bias'][:2]
+            # state_dict['module_list.50.batch_norm_50.running_mean'] = state_dict['module_list.50.batch_norm_50.running_mean'][:2]
+            # state_dict['module_list.50.batch_norm_50.running_var'] = state_dict['module_list.50.batch_norm_50.running_var'][:2]
+            # model.load_state_dict(state_dict)
             model.load_state_dict(torch.load(weights_path, map_location=device))
         else:
             # Load darknet weights
