@@ -149,7 +149,7 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
     """
     model.eval()  # Set model to evaluation mode
 
-    Tensor = torch.FloatTensor
+    Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
     labels = []
     sample_metrics = []  # List of tuples (TP, confs, pred)
@@ -268,8 +268,8 @@ def run():
     # module_list.50.batch_norm_50.bias
     # module_list.50.batch_norm_50.running_mean
     # module_list.50.batch_norm_50.running_var
-
-    model = load_model(args.model, args.weights)
+    #
+    # model = load_model(args.model, args.weights)
 
     #print(model.state_dict()['module_list.50.batch_norm_50.running_mean'].shape)
 
