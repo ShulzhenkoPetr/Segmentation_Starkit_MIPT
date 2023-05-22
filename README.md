@@ -1,5 +1,6 @@
 # Segmentation_Starkit_MIPT
 
+Training colab page:
 https://colab.research.google.com/drive/1t31u15uppbW4wa-tZmNWB3adPoG77BNA?authuser=2#scrollTo=PllMnr0siEzg
 
  used resources: 
