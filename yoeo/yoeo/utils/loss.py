@@ -79,14 +79,14 @@ def compute_loss(combined_predictions, combined_targets, model):
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT,
                                        (3, 3))
 
-    tophat_pred = cv2.morphologyEx(seg_predictions[0],
+    tophat_pred = cv2.morphologyEx(seg_predictions[0][:,1,:,:].detach().cpu().numpy(),
                                   cv2.MORPH_TOPHAT,
                                   kernel)
-    tophat_target = cv2.morphologyEx(seg_targets,
+    tophat_target = cv2.morphologyEx(seg_targets.detach().cpu().numpy().astype('uint16'),
                                    cv2.MORPH_TOPHAT,
                                    kernel)
     ce = nn.CrossEntropyLoss()
-    seg_loss = 0.5 * ce(seg_predictions[0], seg_targets).unsqueeze(0) + 0.5 * ce(tophat_pred, tophat_target).unsqueeze(0)
+    seg_loss = 0.5 * ce(seg_predictions[0], seg_targets).unsqueeze(0) + 0.5 * ce(torch.from_numpy(tophat_pred.astype('float')), torch.from_numpy(tophat_target.astype('float'))).unsqueeze(0).to(device)
 
 
     # Add placeholder varables for the different losses
