@@ -46,18 +46,21 @@ class BinaryFocalLoss(nn.Module):
 
     def forward(self, output, target):
         prob = torch.sigmoid(output)
+        print('prob: ', prob.shape)
         prob = torch.clamp(prob, self.smooth, 1.0 - self.smooth)
-
+        print('prob: ', prob.shape)
         valid_mask = None
         if self.ignore_index is not None:
             valid_mask = (target != self.ignore_index).float()
 
         pos_mask = (target == 1).float()
         neg_mask = (target == 0).float()
+        print('pos_mask: ', pos_mask.shape)
         if valid_mask is not None:
             pos_mask = pos_mask * valid_mask
             neg_mask = neg_mask * valid_mask
 
+        print('1-prob ',  torch.pow(1 - prob, self.gamma).shape)
         pos_weight = (pos_mask * torch.pow(1 - prob, self.gamma)).detach()
         pos_loss = -pos_weight * torch.log(prob)  # / (torch.sum(pos_weight) + 1e-4)
 

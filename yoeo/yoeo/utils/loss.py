@@ -67,7 +67,12 @@ def compute_loss(combined_predictions, combined_targets, model):
     # seg_loss = nn.CrossEntropyLoss()(seg_predictions[0], seg_targets).unsqueeze(0)
 
     # Focal loss
-    seg_loss = BinaryFocalLoss().forward(seg_predictions[0], seg_targets).unsqueeze(0)
+    print('seg pred: ', seg_predictions.shape)
+    print(seg_predictions[0].shape)
+    print('targets: ', seg_targets.shape)
+    seg_loss = BinaryFocalLoss(1, alpha=3, gamma=2,
+                               ignore_index=None,
+                               reduction='mean').forward(seg_predictions[0], seg_targets).unsqueeze(0)
 
     #New segmentation loss based on Morphological
     #Cross Entropy Loss for Improved Semantic
@@ -200,3 +205,4 @@ def build_targets(p, targets, model):
         tcls.append(c)
 
     return tcls, tbox, indices, anch
+
