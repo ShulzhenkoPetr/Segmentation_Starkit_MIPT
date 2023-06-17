@@ -1,5 +1,8 @@
 # Segmentation_Starkit_MIPT
 
+Training colab page:
+https://colab.research.google.com/drive/1t31u15uppbW4wa-tZmNWB3adPoG77BNA?authuser=2#scrollTo=PllMnr0siEzg
+
  used resources: 
  1. Mask-RCNN old demo  https://colab.research.google.com/drive/1xEMkdy90aodBRsIh85PSw56mgHwJKj7z#scrollTo=IrHm-RVPFE3t
  2. Mask-RCNN updated version 
