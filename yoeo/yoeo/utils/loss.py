@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 
 from .utils import to_cpu
-from focal_loss import BinaryFocalLoss
+from .focal_loss import BinaryFocalLoss
 
 # This new loss function is based on https://github.com/ultralytics/yolov3/blob/master/utils/loss.py
 
