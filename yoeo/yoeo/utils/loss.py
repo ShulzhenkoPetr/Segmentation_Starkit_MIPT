@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 
 from .utils import to_cpu
+from focal_loss import BinaryFocalLoss
 
 # This new loss function is based on https://github.com/ultralytics/yolov3/blob/master/utils/loss.py
 
@@ -62,8 +63,20 @@ def compute_loss(combined_predictions, combined_targets, model):
     # Check which device was used
     device = yolo_targets.device
 
-    # Segmentation loss
-    seg_loss = nn.CrossEntropyLoss()(seg_predictions[0], seg_targets).unsqueeze(0)
+    # Segmentation loss - old
+    # seg_loss = nn.CrossEntropyLoss()(seg_predictions[0], seg_targets).unsqueeze(0)
+
+    # Focal loss
+    seg_loss = BinaryFocalLoss().forward(seg_predictions[0], seg_targets).unsqueeze(0)
+
+    #New segmentation loss based on Morphological
+    #Cross Entropy Loss for Improved Semantic
+    #Segmentation of Small and Thin Objects
+
+    # seg_loss =
+
+
+
 
     # Add placeholder varables for the different losses
     lcls, lbox, lobj = torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device)
