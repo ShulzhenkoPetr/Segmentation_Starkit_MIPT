@@ -199,8 +199,6 @@ def _evaluate(model, dataloader, class_names, img_size, iou_thres, conf_thres, n
 
     seg_class_ious = [seg_iou_mean_without_nan(class_ious) for class_ious in list(zip(*seg_ious))]
 
-    print(seg_class_ious)
-
     print_eval_stats(yolo_metrics_output, seg_class_ious, class_names, verbose)
 
 #    write_eval_stats(yolo_metrics_output, seg_class_ious, class_names, 1/np.array(times).mean())
