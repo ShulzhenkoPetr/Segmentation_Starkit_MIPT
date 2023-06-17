@@ -3,6 +3,8 @@ import math
 import torch
 import torch.nn as nn
 
+import cv2
+
 from .utils import to_cpu
 from .focal_loss import BinaryFocalLoss
 
@@ -67,17 +69,24 @@ def compute_loss(combined_predictions, combined_targets, model):
     # seg_loss = nn.CrossEntropyLoss()(seg_predictions[0], seg_targets).unsqueeze(0)
 
     # Focal loss
-    seg_loss = BinaryFocalLoss().forward(
-                seg_predictions[0][:, 1, :, :], seg_targets
-            ).unsqueeze(0)
+    # seg_loss = BinaryFocalLoss().forward(
+    #             seg_predictions[0][:, 1, :, :], seg_targets
+    #         ).unsqueeze(0)
 
     #New segmentation loss based on Morphological
     #Cross Entropy Loss for Improved Semantic
     #Segmentation of Small and Thin Objects
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT,
+                                       (3, 3))
 
-    # seg_loss =
-
-
+    tophat_pred = cv2.morphologyEx(seg_predictions[0],
+                                  cv2.MORPH_TOPHAT,
+                                  kernel)
+    tophat_target = cv2.morphologyEx(seg_targets,
+                                   cv2.MORPH_TOPHAT,
+                                   kernel)
+    ce = nn.CrossEntropyLoss()
+    seg_loss = 0.5 * ce(seg_predictions[0], seg_targets).unsqueeze(0) + 0.5 * ce(tophat_pred, tophat_target).unsqueeze(0)
 
 
     # Add placeholder varables for the different losses
